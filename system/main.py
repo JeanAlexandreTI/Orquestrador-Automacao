@@ -25,35 +25,41 @@ class Organiza_Auto():
     """)
 
 
-    def verifica_caminho(self, dicionario):
+    def verifica_caminho(self, caminho):
 
-        if os.path.exists(dicionario[self.__caminho]):
+        if os.path.exists(caminho):
             print("\nCaminho da estrutuda automatizada existente.")
 
-            self.__list_automacoes.append(dicionario)
-            self.voltar_menu(f"{dicionario[self.__nome]} foi devidamente cadastrado.")
+            dict_dados ={
+                "nome": self.__nome,
+                "intervalo": self.__intervalo,
+                "objetivo": self.__objetivo,
+                "ativo": self.__ativo,
+                "caminho": self.__caminho,
+                    }
+
+            self.__list_automacoes.append(dict_dados)
+            self.voltar_menu(f"{self.__nome} foi devidamente cadastrado.")
 
         else:
             self.voltar_menu("\nRegistre um caminho existente.")
 
 
     def cadastrar_auto(self):
-        dict_automacao = {
-            self.__nome: input("Nome da estrutura automatizada: ").upper().strip(),
-            self.__intervalo: int(input("Intervalo de execucao da estrutura (segundos): ")),
-            self.__objetivo: input("Resumo referente a estrutura: ").upper().strip(),
-            self.__ativo: False,
-            self.__caminho: input("Caminho da estrutura que deve rodar: ").strip()
-        }
+        self.__nome= input("Nome da estrutura automatizada: ").upper().strip()
+        self.__intervalo= int(input("Intervalo de execucao da estrutura (segundos): "))
+        self.__objetivo= input("Resumo referente a estrutura: ").upper().strip()
+        self.__ativo= False
+        self.__caminho= input("Caminho da estrutura que deve rodar: ").strip()
 
-        self.verifica_caminho(dict_automacao)
+        self.verifica_caminho(self.__caminho)
 
 
     def ativar_auto(self):
         pesquisa_auto = input("Nome da estrutura procurada: ").upper().strip()
         for i in self.__list_automacoes:
-            if i[self.__caminho] == pesquisa_auto:
-                print(f"{i[self.__caminho]} passou de {'ATIVO' if i[self.__ativo] else 'DESATIVO'} para:", end=" ")
+            if i[self.__nome] == pesquisa_auto:
+                print(f"{i[self.__nome]} passou de {'ATIVO' if i[self.__ativo] else 'DESATIVO'} para:", end=" ")
                 i[self.__ativo] = not i[self.__ativo]
                 print(f"{'ATIVO' if i[self.__ativo] else 'DESATIVO'}")
 
@@ -61,6 +67,8 @@ class Organiza_Auto():
     def listar_auto(self):
         pesquisa_auto = input("Nome da estrutura procurada: ").upper().strip()
         pesquisa_encontrada = False
+
+        print(self.__list_automacoes)
 
         for i in self.__list_automacoes:
             if i[self.__nome] == pesquisa_auto:
